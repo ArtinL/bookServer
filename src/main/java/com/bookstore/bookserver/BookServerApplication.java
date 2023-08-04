@@ -5,11 +5,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@ComponentScan(basePackages = {"com.bookstore.bookserver", "com.bookstore.bookserver.api"})
+@ComponentScan(basePackages = {"com.bookstore.bookserver.api", "com.bookstore.bookserver.providers", "com.bookstore.bookserver.service", "com.bookstore.bookserver.model"})
 public class BookServerApplication {
 
     public static void main(String[] args) {
-        System.out.println("BookServerApplication.main() called");
+        //System.out.println("BookServerApplication.main() called");
         SpringApplication.run(BookServerApplication.class, args);
     }
 
