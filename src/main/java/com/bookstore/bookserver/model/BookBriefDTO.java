@@ -10,16 +10,16 @@ public class BookBriefDTO {
     public String[] authors;
     public String publishedDate;
 
-    public String smallThumbnail;
+    public String thumbnail;
 
     public BookBriefDTO() {}
 
-    public BookBriefDTO(String id, String title, String[] authors, String publishedDate, String smallThumbnail) {
+    public BookBriefDTO(String id, String title, String[] authors, String publishedDate, String thumbnail) {
         this._id = id;
         this.title = title;
         this.authors = authors;
         this.publishedDate = publishedDate;
-        this.smallThumbnail = smallThumbnail;
+        this.thumbnail = thumbnail;
     }
 
 }

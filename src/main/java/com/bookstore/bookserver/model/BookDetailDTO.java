@@ -13,7 +13,7 @@ public class BookDetailDTO {
     public String[] categories;
     public double averageRating;
     public int ratingsCount;
-    public String largeThumbnail;
+    public String thumbnail;
     public String language;
     public String previewLink;
 
@@ -21,7 +21,7 @@ public class BookDetailDTO {
 
     public BookDetailDTO(String id, String title, String[] authors, String publishedDate, String publisher,
                          String description, int pageCount, String[] categories, double averageRating,
-                         int ratingsCount, String largeThumbnail, String language, String previewLink) {
+                         int ratingsCount, String thumbnail, String language, String previewLink) {
         this._id = id;
         this.title = title;
         this.authors = authors;
@@ -32,7 +32,7 @@ public class BookDetailDTO {
         this.categories = categories;
         this.averageRating = averageRating;
         this.ratingsCount = ratingsCount;
-        this.largeThumbnail = largeThumbnail;
+        this.thumbnail = thumbnail;
         this.language = language;
         this.previewLink = previewLink;
     }

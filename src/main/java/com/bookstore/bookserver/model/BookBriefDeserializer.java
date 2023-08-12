@@ -42,12 +42,12 @@ public class BookBriefDeserializer extends JsonDeserializer<BookBriefDTO[]> {
             JsonNode imageLinksNode = volumeInfoNode.get("imageLinks");
 
             if (imageLinksNode == null) {
-                bookBriefDTO.smallThumbnail = null;
+                bookBriefDTO.thumbnail = null;
 
             } else {
                 JsonNode smallThumbnailNode = imageLinksNode.get("smallThumbnail");
-                if (smallThumbnailNode != null) bookBriefDTO.smallThumbnail = smallThumbnailNode.asText();
-                else bookBriefDTO.smallThumbnail = null;
+                if (smallThumbnailNode != null) bookBriefDTO.thumbnail = smallThumbnailNode.asText();
+                else bookBriefDTO.thumbnail = null;
 
             }
 

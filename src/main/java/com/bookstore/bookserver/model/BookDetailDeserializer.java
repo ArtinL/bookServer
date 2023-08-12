@@ -37,12 +37,12 @@ public class BookDetailDeserializer extends JsonDeserializer<BookDetailDTO> {
 
         JsonNode imageLinksNode = node.get("volumeInfo").get("imageLinks");
         if (imageLinksNode == null) {
-            bookDetailDTO.largeThumbnail = null;
+            bookDetailDTO.thumbnail = null;
 
         } else {
             JsonNode smallThumbnailNode = imageLinksNode.get("smallThumbnail");
-            if (smallThumbnailNode != null) bookDetailDTO.largeThumbnail = smallThumbnailNode.asText();
-            else bookDetailDTO.largeThumbnail = null;
+            if (smallThumbnailNode != null) bookDetailDTO.thumbnail = smallThumbnailNode.asText();
+            else bookDetailDTO.thumbnail = null;
 
         }
 

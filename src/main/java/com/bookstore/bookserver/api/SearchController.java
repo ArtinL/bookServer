@@ -16,8 +16,8 @@ public class SearchController {
     private final BookService bookService;
 
     @Autowired
-    public SearchController() {
-        this.bookService = new BookService();
+    public SearchController(BookService bookService) {
+        this.bookService = bookService;
     }
 
     @GetMapping
