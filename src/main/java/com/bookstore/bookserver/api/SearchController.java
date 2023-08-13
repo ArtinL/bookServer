@@ -16,13 +16,13 @@ public class SearchController {
     private final BookService bookService;
 
     @Autowired
-    public SearchController() {
-        this.bookService = new BookService();
+    public SearchController(BookService bookService) {
+        this.bookService = bookService;
     }
 
     @GetMapping
     public ResponseEntity<BookBriefDTO[]> getBooks(@RequestParam(name = "title") String title) {
-        return bookService.searchBooks(title);
+        return bookService.searchBooks(title.replace(" ", "+"));
     }
 
     @GetMapping("/{id}")

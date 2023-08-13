@@ -3,7 +3,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class BookDetailDTO {
-    String _id;
+    String id;
     String title;
     String[] authors;
     String publishedDate;
@@ -22,7 +22,7 @@ public class BookDetailDTO {
     public BookDetailDTO(String id, String title, String[] authors, String publishedDate, String publisher,
                          String description, int pageCount, String[] categories, double averageRating,
                          int ratingsCount, String largeThumbnail, String language, String previewLink) {
-        this._id = id;
+        this.id = id;
         this.title = title;
         this.authors = authors;
         this.publishedDate = publishedDate;
@@ -38,11 +38,11 @@ public class BookDetailDTO {
     }
 
     public String getId() {
-        return _id;
+        return id;
     }
 
     public void setId(String _id) {
-        this._id = _id;
+        this.id = _id;
     }
 
     public String getTitle() {

@@ -5,8 +5,9 @@ import com.bookstore.bookserver.providers.BooksAPIClient;
 
 import org.springframework.stereotype.Component;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 public class BookService {
     private final BooksAPIClient booksAPIClient;
 
@@ -16,6 +17,7 @@ public class BookService {
 
     public ResponseEntity<BookBriefDTO[]> searchBooks(String query) {
         BookBriefDTO[] objects = booksAPIClient.searchBooks(query);
+        System.out.println(objects[0]);
         return ResponseEntity.ok(objects);
     }
 

@@ -1,100 +1,116 @@
 package com.bookstore.bookserver.service;
 
+import com.bookstore.bookserver.model.BookBriefDTO;
+import com.bookstore.bookserver.model.FavModel;
+import com.bookstore.bookserver.repository.FavRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.stereotype.Component;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import com.bookstore.bookserver.model.BookBriefDTO;
 
-import java.util.Arrays;
 
-@Component
+@Service
 public class FavService {
-    private  RestTemplate restTemplate;
-    public FavService() {
-        this.restTemplate = new RestTemplate();
-    }
-    private static class JSONTemplate {
-        public String _id;
-        public String userID;
-        public String title;
-        public String[] authors;
-        public String publishedDate;
-        public String smallThumbnail;
 
-        public JSONTemplate() {}
+    private static class FavTemplate {
+        String id;
+        String title;
+        String[] authors;
+        String publishedDate;
+        String smallThumbnail;
 
-        public JSONTemplate(String _id, String userID, String title, String[] authors, String publishedDate, String smallThumbnail) {
-            this._id = _id;
-            this.userID = userID;
+        public void setId(String id) {
+            this.id = id;
+        }
+        public void setTitle(String title) {
             this.title = title;
+        }
+        public void setAuthors(String[] authors) {
             this.authors = authors;
+        }
+        public void setPublishedDate(String publishedDate) {
             this.publishedDate = publishedDate;
+        }
+        public void setSmallThumbnail(String smallThumbnail) {
             this.smallThumbnail = smallThumbnail;
         }
-
     }
-    public void createBook(String book, String userId) {
-        System.out.println("FavService.createBook() called");
-        System.out.println("book = " + book);
+
+    private final FavRepository favRepository;
+    private final RestTemplate restTemplate;
+
+    @Autowired
+    public FavService(FavRepository favRepository) {
+        this.restTemplate = new RestTemplate();
+        this.favRepository = favRepository;
+    }
+
+
+    public boolean createBook(String book, String userId) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        FavTemplate bookObj = null;
+        try {
+            bookObj = objectMapper.readValue(book, FavTemplate.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("FavOldService.createBook() exception");
+            return false;
+        }
+
+        FavModel favModel = convertToDataModel(bookObj, userId);
+
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<String> request = new HttpEntity<String>(book, headers);
-        restTemplate.postForObject("http://localhost:8090/books/" + userId, request, String.class);
 
+        HttpEntity<FavModel> request = new HttpEntity<>(favModel, headers);
+        String SERVICE_URL = "https://ys67ilhostajlhkurd4czfisvu0foqtw.lambda-url.us-east-2.on.aws/new-book";
+        restTemplate.postForObject(SERVICE_URL, request, FavModel.class);
+
+        return true;
 
     }
 
+    public BookBriefDTO[] retrieveBooks(String userId) {
+        return favRepository.findByUserID(userId)
+                .stream()
+                .map(this::convertToBriefDTO)
+                .toArray(BookBriefDTO[]::new);
+    }
 
-    public ResponseEntity<BookBriefDTO[]> retrieveBooks(String userId) {
-        System.out.println("FavService.retrieveBooks() called");
-        String url = "http://localhost:8090/books/" + userId;
+    public boolean deleteBook(String userID, String bookID) {
+        FavModel bookToDelete = favRepository.findByUserIDAndBookID(userID, bookID);
 
-        ResponseEntity<JSONTemplate[]> responseEntity = restTemplate.exchange(
-                url,
-                HttpMethod.GET,
-                null,
-                new ParameterizedTypeReference<JSONTemplate[]>() {}
+        if (bookToDelete != null) {
+            favRepository.delete(bookToDelete);
+            return true;
+        } else return false;
+
+    }
+
+    private BookBriefDTO convertToBriefDTO(FavModel favModel) {
+        BookBriefDTO briefDTO = new BookBriefDTO();
+        briefDTO.setId(favModel.getBookID()); // Use your application's identifier
+        briefDTO.setTitle(favModel.getTitle());
+        briefDTO.setAuthors(favModel.getAuthors());
+        briefDTO.setPublishedDate(favModel.getPublishedDate());
+        briefDTO.setSmallThumbnail(favModel.getSmallThumbnail());
+        return briefDTO;
+    }
+
+    private FavModel convertToDataModel (FavTemplate bookBriefDTO, String userID) {
+        return new FavModel(
+                bookBriefDTO.id,
+                userID,
+                bookBriefDTO.title,
+                bookBriefDTO.authors,
+                bookBriefDTO.publishedDate,
+                bookBriefDTO.smallThumbnail
         );
-
-        System.out.println(Arrays.toString(responseEntity.getBody()));
-
-        JSONTemplate[] jsonTemplates = responseEntity.getBody();
-        if (jsonTemplates == null) {
-            return null;
-        }
-
-        // Convert JSONTemplate objects to an array of BookBriefDTO
-        BookBriefDTO[] bookBriefDTOs = new BookBriefDTO[jsonTemplates.length];
-        for (int i = 0; i < jsonTemplates.length; i++) {
-            JSONTemplate jsonTemplate = jsonTemplates[i];
-            BookBriefDTO bookBriefDTO = new BookBriefDTO();
-            bookBriefDTO.setId(jsonTemplate._id);
-            bookBriefDTO.setTitle(jsonTemplate.title);
-            bookBriefDTO.setAuthors(jsonTemplate.authors);
-            bookBriefDTO.setPublishedDate(jsonTemplate.publishedDate);
-            bookBriefDTO.setSmallThumbnail(jsonTemplate.smallThumbnail);
-            // Set other fields as needed
-
-            bookBriefDTOs[i] = bookBriefDTO;
-        }
-
-        System.out.println(bookBriefDTOs[0].getId());
-
-        return ResponseEntity.ok(bookBriefDTOs);
     }
 
-    public void updateBook(String id, BookBriefDTO book) {
-        // TODO Auto-generated method stub
-    }
 
-    public void deleteBook(String id) {
-        // TODO Auto-generated method stub
-    }
 
 }
-

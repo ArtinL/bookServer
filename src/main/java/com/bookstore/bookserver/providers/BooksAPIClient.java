@@ -22,6 +22,8 @@ public class BooksAPIClient {
     public BookBriefDTO[] searchBooks(String query) {
         String apiUrlWithQuery = API_URL + "?q=" + query + "&key=" + API_KEY;
 
+        //System.out.println("URL: " + apiUrlWithQuery);
+
         String jsonResponse = restTemplate.getForObject(apiUrlWithQuery, String.class);
 
         ObjectMapper objectMapper = new ObjectMapper();

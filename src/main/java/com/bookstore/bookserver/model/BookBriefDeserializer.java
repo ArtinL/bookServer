@@ -16,6 +16,7 @@ public class BookBriefDeserializer extends JsonDeserializer<BookBriefDTO[]> {
     public BookBriefDTO[] deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
         ObjectMapper objectMapper = (ObjectMapper) jsonParser.getCodec();
         JsonNode rootNode = objectMapper.readTree(jsonParser);
+
         JsonNode itemsNode = rootNode.get("items");
 
         List<BookBriefDTO> bookBriefDTOList = new ArrayList<>();
@@ -30,7 +31,7 @@ public class BookBriefDeserializer extends JsonDeserializer<BookBriefDTO[]> {
 
             BookBriefDTO bookBriefDTO = new BookBriefDTO();
 
-            bookBriefDTO._id = idNode.asText();
+            bookBriefDTO.id = idNode.asText();
             bookBriefDTO.title = volumeInfoNode.get("title").asText();
             bookBriefDTO.publishedDate = volumeInfoNode.get("publishedDate").asText();
 
@@ -57,4 +58,8 @@ public class BookBriefDeserializer extends JsonDeserializer<BookBriefDTO[]> {
 
         return bookBriefDTOList.toArray(new BookBriefDTO[0]);
     }
+
+
+
+
 }

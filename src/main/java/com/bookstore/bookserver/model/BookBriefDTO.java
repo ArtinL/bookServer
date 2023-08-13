@@ -1,20 +1,28 @@
 package com.bookstore.bookserver.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
+import java.util.Arrays;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonDeserialize(using = BookBriefDeserializer.class)
 public class BookBriefDTO {
-    String _id;
+    @JsonProperty("id")
+    String id;
+    @JsonProperty("title")
     String title;
+    @JsonProperty("authors")
     String[] authors;
+    @JsonProperty("publishedDate")
     String publishedDate;
+    @JsonProperty("smallThumbnail")
     String smallThumbnail;
 
     public BookBriefDTO() {}
 
     public BookBriefDTO(String id, String title, String[] authors, String publishedDate, String smallThumbnail) {
-        this._id = id;
+        this.id = id;
         this.title = title;
         this.authors = authors;
         this.publishedDate = publishedDate;
@@ -22,7 +30,7 @@ public class BookBriefDTO {
     }
 
     public String getId() {
-        return _id;
+        return id;
     }
 
     public String getTitle() {
@@ -41,8 +49,8 @@ public class BookBriefDTO {
         return smallThumbnail;
     }
 
-    public void setId(String _id) {
-        this._id = _id;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public void setTitle(String title) {
@@ -59,5 +67,15 @@ public class BookBriefDTO {
 
     public void setSmallThumbnail(String smallThumbnail) {
         this.smallThumbnail = smallThumbnail;
+    }
+
+    public String toString() {
+        return "BookBriefDTO{" +
+                "bookID='" + id + '\'' +
+                ", title='" + title + '\'' +
+                ", authors=" + Arrays.toString(authors) +
+                ", publishedDate='" + publishedDate + '\'' +
+                ", smallThumbnail='" + smallThumbnail + '\'' +
+                '}';
     }
 }

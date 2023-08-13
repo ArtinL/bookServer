@@ -5,7 +5,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@ComponentScan(basePackages = {"com.bookstore.bookserver.api", "com.bookstore.bookserver.providers", "com.bookstore.bookserver.service", "com.bookstore.bookserver.model"})
+@ComponentScan(basePackages = {"com.bookstore.bookserver.api", "com.bookstore.bookserver.providers", "com.bookstore.bookserver.service",
+        "com.bookstore.bookserver.model", "com.bookstore.bookserver.repository"})
 public class BookServerApplication {
 
     public static void main(String[] args) {

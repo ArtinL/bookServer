@@ -16,7 +16,7 @@ public class BookDetailDeserializer extends JsonDeserializer<BookDetailDTO> {
         JsonNode node = objectMapper.readTree(jsonParser);
 
         BookDetailDTO bookDetailDTO = new BookDetailDTO();
-        bookDetailDTO._id = node.get("id").asText();
+        bookDetailDTO.id = node.get("id").asText();
         bookDetailDTO.title = node.get("volumeInfo").get("title").asText();
         bookDetailDTO.publishedDate = node.get("volumeInfo").get("publishedDate").asText();
         bookDetailDTO.publisher = node.get("volumeInfo").get("publisher").asText();
