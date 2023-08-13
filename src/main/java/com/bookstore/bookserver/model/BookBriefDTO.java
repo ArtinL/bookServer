@@ -5,12 +5,11 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonDeserialize(using = BookBriefDeserializer.class)
 public class BookBriefDTO {
-    public String _id;
-    public String title;
-    public String[] authors;
-    public String publishedDate;
-
-    public String smallThumbnail;
+    String _id;
+    String title;
+    String[] authors;
+    String publishedDate;
+    String smallThumbnail;
 
     public BookBriefDTO() {}
 
@@ -22,4 +21,43 @@ public class BookBriefDTO {
         this.smallThumbnail = smallThumbnail;
     }
 
+    public String getId() {
+        return _id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String[] getAuthors() {
+        return authors;
+    }
+
+    public String getPublishedDate() {
+        return publishedDate;
+    }
+
+    public String getSmallThumbnail() {
+        return smallThumbnail;
+    }
+
+    public void setId(String _id) {
+        this._id = _id;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setAuthors(String[] authors) {
+        this.authors = authors;
+    }
+
+    public void setPublishedDate(String publishedDate) {
+        this.publishedDate = publishedDate;
+    }
+
+    public void setSmallThumbnail(String smallThumbnail) {
+        this.smallThumbnail = smallThumbnail;
+    }
 }
