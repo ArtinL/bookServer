@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import java.util.Arrays;
 
+@SuppressWarnings("unused")
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonDeserialize(using = BookBriefDeserializer.class)
 public class BookBriefDTO {

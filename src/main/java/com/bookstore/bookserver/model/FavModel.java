@@ -2,6 +2,7 @@ package com.bookstore.bookserver.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+@SuppressWarnings("unused")
 @Document(collection = "books")
 public class FavModel {
     @Id

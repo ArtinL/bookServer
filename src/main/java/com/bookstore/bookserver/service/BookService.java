@@ -2,8 +2,6 @@ package com.bookstore.bookserver.service;
 
 import com.bookstore.bookserver.model.*;
 import com.bookstore.bookserver.providers.BooksAPIClient;
-
-import org.springframework.stereotype.Component;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 

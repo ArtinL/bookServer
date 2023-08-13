@@ -15,6 +15,7 @@ import org.springframework.web.client.RestTemplate;
 @Service
 public class FavService {
 
+    @SuppressWarnings("unused")
     private static class FavTemplate {
         String id;
         String title;
@@ -51,7 +52,7 @@ public class FavService {
 
     public boolean createBook(String book, String userId) {
         ObjectMapper objectMapper = new ObjectMapper();
-        FavTemplate bookObj = null;
+        FavTemplate bookObj;
         try {
             bookObj = objectMapper.readValue(book, FavTemplate.class);
         } catch (Exception e) {

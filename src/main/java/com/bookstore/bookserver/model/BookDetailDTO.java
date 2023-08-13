@@ -1,6 +1,7 @@
 package com.bookstore.bookserver.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+@SuppressWarnings("unused")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class BookDetailDTO {
     String id;
