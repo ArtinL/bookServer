@@ -2,11 +2,16 @@ package com.bookstore.bookserver.api;
 import com.bookstore.bookserver.model.BookBriefDTO;
 import com.bookstore.bookserver.service.FavService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
 
 @RestController
-@RequestMapping("/collection")
+@RequestMapping("/favorites")
 @CrossOrigin(origins = "http://localhost:3000")
 public class FavController {
 
@@ -19,8 +24,11 @@ public class FavController {
 
     @PostMapping("/{userId}")
     public ResponseEntity<String> createBook(@RequestBody String book, @PathVariable(name = "userId") String userId) {
-        if (favService.createBook(book, userId)) {
-            return ResponseEntity.ok("Book added to collection");
+        boolean success = favService.createBook(book, userId);
+
+        if (success) {
+            String uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(userId).toUriString();
+            return ResponseEntity.created(URI.create(uri)).build();
         } else {
             return ResponseEntity.badRequest().body("Add failed");
         }
@@ -34,12 +42,13 @@ public class FavController {
     @DeleteMapping("/{userId}/{id}")
     public ResponseEntity<String> deleteBook(@PathVariable(name = "userId") String userID, @PathVariable(name = "id") String id) {
         if (favService.deleteBook(userID, id)) {
-            return ResponseEntity.ok("Book deleted from collection");
+            return ResponseEntity.noContent().build();
         } else {
             return ResponseEntity.badRequest().body("Delete failed");
         }
 
     }
+
 
 
 }

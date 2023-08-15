@@ -1,13 +1,14 @@
 package com.bookstore.bookserver.repository;
 
-import com.bookstore.bookserver.model.FavModel;
+import com.bookstore.bookserver.entities.FavEntity;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
-public interface FavRepository extends MongoRepository<FavModel, String> {
-    List<FavModel> findByUserID(String userId);
-    FavModel findByUserIDAndBookID(String userId, String bookId);
+public interface FavRepository extends MongoRepository<FavEntity, String> {
+    Optional<List<FavEntity>> findByUserID(String userId);
+    Optional<FavEntity> findByUserIDAndBookID(String userId, String bookId);
 
 }

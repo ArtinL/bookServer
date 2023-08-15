@@ -1,10 +1,10 @@
-package com.bookstore.bookserver.model;
+package com.bookstore.bookserver.entities;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @SuppressWarnings("unused")
 @Document(collection = "books")
-public class FavModel {
+public class FavEntity {
     @Id
     private String _id; // MongoDB's _id
     private String bookID; // Your application's identifier
@@ -14,7 +14,7 @@ public class FavModel {
     private String publishedDate;
     private String smallThumbnail;
 
-    public FavModel(String bookID, String userID, String title, String[] authors, String publishedDate, String smallThumbnail) {
+    public FavEntity(String bookID, String userID, String title, String[] authors, String publishedDate, String smallThumbnail) {
         this.bookID = bookID;
         this.userID = userID;
         this.title = title;
