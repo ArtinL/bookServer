@@ -2,24 +2,25 @@ package com.bookstore.bookserver.model;
 
 import com.bookstore.bookserver.entities.ApplicationUser;
 
+@SuppressWarnings("unused")
 public class LoginResponseDTO {
-    private ApplicationUser user;
+    private UserDTO user;
     private String jwt;
 
     public LoginResponseDTO() {
         super();
     }
 
-    public LoginResponseDTO(ApplicationUser user, String jwt) {
+    public LoginResponseDTO(UserDTO user, String jwt) {
         this.user = user;
         this.jwt = jwt;
     }
 
-    public ApplicationUser getUser() {
+    public UserDTO getUser() {
         return user;
     }
 
-    public void setUser(ApplicationUser user) {
+    public void setUser(UserDTO user) {
         this.user = user;
     }
 

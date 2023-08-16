@@ -1,14 +1,15 @@
 package com.bookstore.bookserver.model;
 
-public class RegistrationDTO {
+@SuppressWarnings("unused")
+public class CredentialsDTO {
     private String username;
     private String password;
 
-    public RegistrationDTO() {
+    public CredentialsDTO() {
         super();
     }
 
-    public RegistrationDTO(String username, String password) {
+    public CredentialsDTO(String username, String password) {
         super();
         this.username = username;
         this.password = password;

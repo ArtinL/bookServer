@@ -17,7 +17,6 @@ public class SearchService {
 
     public ResponseEntity<BookBriefDTO[]> searchBooks(String query) {
         BookBriefDTO[] objects = booksAPIClient.searchBooks(query);
-        System.out.println(objects[0]);
         return ResponseEntity.ok(objects);
     }
 

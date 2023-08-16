@@ -17,32 +17,6 @@ import java.util.Optional;
 
 @Service
 public class FavService {
-
-    @SuppressWarnings("unused")
-    private static class FavTemplate {
-        String id;
-        String title;
-        String[] authors;
-        String publishedDate;
-        String smallThumbnail;
-
-        public void setId(String id) {
-            this.id = id;
-        }
-        public void setTitle(String title) {
-            this.title = title;
-        }
-        public void setAuthors(String[] authors) {
-            this.authors = authors;
-        }
-        public void setPublishedDate(String publishedDate) {
-            this.publishedDate = publishedDate;
-        }
-        public void setSmallThumbnail(String smallThumbnail) {
-            this.smallThumbnail = smallThumbnail;
-        }
-    }
-
     private final FavRepository favRepository;
     private final RestTemplate restTemplate;
 
@@ -55,9 +29,9 @@ public class FavService {
 
     public boolean createBook(String bookJson, String userId) {
         ObjectMapper objectMapper = new ObjectMapper();
-        FavTemplate bookObj;
+        BookBriefDTO bookObj;
         try {
-            bookObj = objectMapper.readValue(bookJson, FavTemplate.class);
+            bookObj = objectMapper.readValue(bookJson, BookBriefDTO.class);
         } catch (Exception e) {
             System.out.println("FavOldService.createBook() exception: " + e.getMessage());
             return false;
@@ -110,14 +84,14 @@ public class FavService {
         );
     }
 
-    private FavEntity convertToDataEntity(FavTemplate bookBriefDTO, String userID) {
+    private FavEntity convertToDataEntity(BookBriefDTO bookBriefDTO, String userID) {
         return new FavEntity(
-                bookBriefDTO.id,
+                bookBriefDTO.getId(),
                 userID,
-                bookBriefDTO.title,
-                bookBriefDTO.authors,
-                bookBriefDTO.publishedDate,
-                bookBriefDTO.smallThumbnail
+                bookBriefDTO.getTitle(),
+                bookBriefDTO.getAuthors(),
+                bookBriefDTO.getPublishedDate(),
+                bookBriefDTO.getSmallThumbnail()
         );
     }
 

@@ -42,4 +42,8 @@ public class TokenService {
         return jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
     }
 
+    public String getUserName(String token) {
+    	return jwtDecoder.decode(token).getSubject();
+    }
+
 }

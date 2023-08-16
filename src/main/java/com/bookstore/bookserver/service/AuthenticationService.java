@@ -3,6 +3,7 @@ package com.bookstore.bookserver.service;
 import com.bookstore.bookserver.entities.ApplicationUser;
 import com.bookstore.bookserver.entities.Role;
 import com.bookstore.bookserver.model.LoginResponseDTO;
+import com.bookstore.bookserver.model.UserDTO;
 import com.bookstore.bookserver.repository.RoleRepository;
 import com.bookstore.bookserver.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +37,7 @@ public class AuthenticationService {
         this.tokenService = tokenService;
     }
 
-    public ApplicationUser registerUser(String username, String password) {
+    public UserDTO registerUser(String username, String password) {
         String encodedPassword = passwordEncoder.encode(password);
         Role userRole = roleRepository.findByAuthority("USER").
                 orElseThrow(() -> new RuntimeException("User role not found"));
@@ -44,9 +45,11 @@ public class AuthenticationService {
         Set<Role> authorities = new HashSet<>();
         authorities.add(userRole);
 
-        ApplicationUser newUser = new ApplicationUser(0, username, encodedPassword, authorities);
+        ApplicationUser user = userRepository.save(
+                new ApplicationUser(0, username, encodedPassword, authorities)
+        );
 
-        return userRepository.save(newUser);
+        return new UserDTO(user);
     }
 
     public LoginResponseDTO loginUser(String username, String password) {
@@ -57,13 +60,14 @@ public class AuthenticationService {
 
             String token = tokenService.generateJwt(auth);
 
-            return new LoginResponseDTO(userRepository.findByUsername(username)
-                    .orElseThrow(() -> new RuntimeException("User not found")), token);
+            ApplicationUser user = userRepository.findByUsername(username)
+                    .orElseThrow(() -> new RuntimeException("User not found"));
+
+            return new LoginResponseDTO(new UserDTO(user), token);
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            e.printStackTrace();
-            return new LoginResponseDTO(null, "");
+            return null;
         }
 
     }

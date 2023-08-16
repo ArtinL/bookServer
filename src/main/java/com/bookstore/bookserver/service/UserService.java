@@ -16,13 +16,10 @@ import java.util.Set;
 @Service
 public class UserService implements UserDetailsService {
 
-
-    private final PasswordEncoder encoder;
     private final UserRepository userRepository;
 
     @Autowired
-    public UserService(PasswordEncoder encoder, UserRepository userRepository) {
-        this.encoder = encoder;
+    public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
