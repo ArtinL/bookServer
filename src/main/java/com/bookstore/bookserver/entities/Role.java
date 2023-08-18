@@ -2,7 +2,7 @@ package com.bookstore.bookserver.entities;
 
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
-
+@SuppressWarnings("unused")
 @Entity
 @Table(name= "roles")
 public class Role implements GrantedAuthority {

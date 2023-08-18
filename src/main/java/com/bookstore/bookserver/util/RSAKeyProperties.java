@@ -6,6 +6,7 @@ import java.security.KeyPair;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 
+@SuppressWarnings("unused")
 @Component
 public class RSAKeyProperties {
 

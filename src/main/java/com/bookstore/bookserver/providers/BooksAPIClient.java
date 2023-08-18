@@ -6,11 +6,11 @@ import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.module.SimpleModule;
 
 import java.util.ArrayList;
 
 
+@SuppressWarnings("SpellCheckingInspection")
 @Component
 public class BooksAPIClient {
 
@@ -23,7 +23,7 @@ public class BooksAPIClient {
     }
 
     public BookBriefDTO[] searchBooks(String query) {
-        String apiUrlWithQuery = API_URL + "?q=" + query + "&key=" + API_KEY;
+        String apiUrlWithQuery = API_URL + "?q=" + query + "&printType=books&key=" + API_KEY;
 
         String jsonResponse = restTemplate.getForObject(apiUrlWithQuery, String.class);
 
@@ -38,9 +38,9 @@ public class BooksAPIClient {
                 bookList.add(book);
             }
             return bookList.toArray(new BookBriefDTO[0]);
-            //return objectMapper.readValue(jsonResponse, BookBriefDTO[].class);
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("Deserialization failed");
+            System.out.println(e.getMessage());
             return new BookBriefDTO[0];
         }
     }
@@ -57,7 +57,8 @@ public class BooksAPIClient {
         try {
             return objectMapper.readValue(jsonResponse, BookDetailDTO.class);
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("Deserialization failed");
+            System.out.println(e.getMessage());
             return new BookDetailDTO();
         }
 

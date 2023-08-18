@@ -37,6 +37,8 @@ public class FavService {
             return false;
         }
 
+        if (!isUnique(bookObj.getId(), userId)) return false;
+
         FavEntity favEntity = convertToDataEntity(bookObj, userId);
 
         HttpHeaders headers = new HttpHeaders();
@@ -74,6 +76,20 @@ public class FavService {
 
     }
 
+    public String[] matchAgainstDB(String[] bookIds, String userId) {
+        Optional<List<FavEntity>> optionalFavEntities = favRepository.findByUserID(userId);
+        if (optionalFavEntities.isPresent()) {
+            List<FavEntity> favEntities = optionalFavEntities.get();
+            return favEntities.stream().map(FavEntity::getBookID).filter(bookId -> {
+                for (String id : bookIds) {
+                    if (id.equals(bookId)) return true;
+                }
+                return false;
+            }).toArray(String[]::new);
+
+        } else return null;
+    }
+
     private BookBriefDTO convertToDTO(FavEntity favEntity) {
         return new BookBriefDTO(
                 favEntity.getBookID(),
@@ -93,6 +109,11 @@ public class FavService {
                 bookBriefDTO.getPublishedDate(),
                 bookBriefDTO.getSmallThumbnail()
         );
+    }
+
+    private boolean isUnique(String bookID, String userID) {
+        Optional<FavEntity> optionalFavEntity = favRepository.findByUserIDAndBookID(userID, bookID);
+        return optionalFavEntity.isEmpty();
     }
 
 

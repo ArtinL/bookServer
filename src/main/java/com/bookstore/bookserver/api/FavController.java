@@ -3,9 +3,7 @@ import com.bookstore.bookserver.model.BookBriefDTO;
 import com.bookstore.bookserver.service.FavService;
 import com.bookstore.bookserver.service.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -59,6 +57,20 @@ public class FavController {
             return ResponseEntity.badRequest().body("Delete failed");
         }
 
+    }
+
+    @PostMapping("/match/{userId}")
+    public ResponseEntity<String[]> matchAgainstDB(@RequestBody String[] bookIds, @PathVariable(name = "userId") String userId, @RequestHeader("Authorization") String token) {
+        String extractedUserId = tokenService.getUserName(token.substring(7));
+        if (!userId.equals(extractedUserId)) return ResponseEntity.status(401).build();
+
+        return ResponseEntity.ok(favService.matchAgainstDB(bookIds, userId));
+    }
+
+    @GetMapping("/test")
+    public ResponseEntity<String> testLoggedIn(@RequestHeader("Authorization") String token) {
+        String extractedUserId = tokenService.getUserName(token.substring(7));
+        return ResponseEntity.ok(extractedUserId);
     }
 
 

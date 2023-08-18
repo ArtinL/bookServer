@@ -4,7 +4,6 @@ import com.bookstore.bookserver.entities.ApplicationUser;
 import com.bookstore.bookserver.entities.Role;
 import com.bookstore.bookserver.repository.RoleRepository;
 import com.bookstore.bookserver.repository.UserRepository;
-import jakarta.persistence.SecondaryTable;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

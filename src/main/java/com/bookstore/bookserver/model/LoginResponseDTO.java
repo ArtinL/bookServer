@@ -1,7 +1,5 @@
 package com.bookstore.bookserver.model;
 
-import com.bookstore.bookserver.entities.ApplicationUser;
-
 @SuppressWarnings("unused")
 public class LoginResponseDTO {
     private UserDTO user;

@@ -27,6 +27,7 @@ public class TokenService {
     public String generateJwt(Authentication auth) {
 
         Instant now = Instant.now();
+        Instant expiration = now.plusSeconds(86400);
 
         String scope = auth.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
@@ -35,6 +36,7 @@ public class TokenService {
         JwtClaimsSet claims = JwtClaimsSet.builder()
                 .issuer("self")
                 .issuedAt(now)
+                .expiresAt(expiration)
                 .subject(auth.getName())
                 .claim("roles", scope)
                 .build();
