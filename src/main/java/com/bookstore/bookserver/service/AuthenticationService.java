@@ -2,8 +2,8 @@ package com.bookstore.bookserver.service;
 
 import com.bookstore.bookserver.entities.ApplicationUser;
 import com.bookstore.bookserver.entities.Role;
-import com.bookstore.bookserver.model.LoginResponseDTO;
-import com.bookstore.bookserver.model.UserDTO;
+import com.bookstore.bookserver.model.authdtos.LoginResponseDTO;
+import com.bookstore.bookserver.model.authdtos.UserDTO;
 import com.bookstore.bookserver.repository.RoleRepository;
 import com.bookstore.bookserver.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +36,12 @@ public class AuthenticationService {
         this.tokenService = tokenService;
     }
 
-    public UserDTO registerUser(String username, String password) {
+    public UserDTO registerUser(String email, String username, String password) {
+        if (username == null || password == null || email == null ||
+                username.isEmpty() || password.isEmpty()) {
+            throw new IllegalArgumentException("Username and password cannot be empty");
+        }
+
         String encodedPassword = passwordEncoder.encode(password);
         Role userRole = roleRepository.findByAuthority("USER").
                 orElseThrow(() -> new RuntimeException("User role not found"));
@@ -45,29 +50,33 @@ public class AuthenticationService {
         authorities.add(userRole);
 
         ApplicationUser user = userRepository.save(
-                new ApplicationUser(0, username, encodedPassword, authorities)
+                new ApplicationUser(0, email, username, encodedPassword, authorities)
         );
 
         return new UserDTO(user);
     }
 
-    public LoginResponseDTO loginUser(String username, String password) {
-        try {
-            Authentication auth = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(username, password)
-            );
+    public LoginResponseDTO loginUser(String email, String username, String password) throws Exception {
+        if (username == null || email == null || password == null )
+            throw new IllegalArgumentException("Username and password cannot be empty");
 
-            String token = tokenService.generateJwt(auth);
+        if (username.isEmpty())
+            username = userRepository.findByEmail(email)
+                    .orElseThrow(() -> new IllegalArgumentException("User not found"))
+                    .getUsername();
 
-            ApplicationUser user = userRepository.findByUsername(username)
-                    .orElseThrow(() -> new RuntimeException("User not found"));
 
-            return new LoginResponseDTO(new UserDTO(user), token);
+        Authentication auth = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(username, password)
+        );
 
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            return null;
-        }
+        String token = tokenService.generateJwt(auth);
+
+        ApplicationUser user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        return new LoginResponseDTO(new UserDTO(user), token);
+
 
     }
 

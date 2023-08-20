@@ -1,13 +1,10 @@
 package com.bookstore.bookserver.service;
 
-import com.bookstore.bookserver.model.BookBriefDTO;
+import com.bookstore.bookserver.model.bookdtos.BookBriefDTO;
 import com.bookstore.bookserver.entities.FavEntity;
 import com.bookstore.bookserver.repository.FavRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -38,16 +35,16 @@ public class FavService {
         }
 
         if (!isUnique(bookObj.getId(), userId)) return false;
-
         FavEntity favEntity = convertToDataEntity(bookObj, userId);
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<FavEntity> request = new HttpEntity<>(favEntity, headers);
+        favRepository.save(favEntity);
 
 
-        String serviceUrl = "https://ys67ilhostajlhkurd4czfisvu0foqtw.lambda-url.us-east-2.on.aws/new-book";
-        restTemplate.postForObject(serviceUrl, request, FavEntity.class);
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.setContentType(MediaType.APPLICATION_JSON);
+//        HttpEntity<FavEntity> request = new HttpEntity<>(favEntity, headers);
+//
+//        String serviceUrl = "https://ys67ilhostajlhkurd4czfisvu0foqtw.lambda-url.us-east-2.on.aws/new-book";
+//        restTemplate.postForObject(serviceUrl, request, FavEntity.class);
 
         return true;
 

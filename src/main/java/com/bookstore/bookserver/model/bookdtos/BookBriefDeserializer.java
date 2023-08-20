@@ -1,4 +1,4 @@
-package com.bookstore.bookserver.model;
+package com.bookstore.bookserver.model.bookdtos;
 
 import com.bookstore.bookserver.util.DeserializerUtility;
 import com.fasterxml.jackson.core.JsonParser;

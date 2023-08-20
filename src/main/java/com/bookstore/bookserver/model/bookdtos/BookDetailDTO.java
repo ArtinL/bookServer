@@ -1,4 +1,4 @@
-package com.bookstore.bookserver.model;
+package com.bookstore.bookserver.model.bookdtos;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 

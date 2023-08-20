@@ -1,7 +1,8 @@
 package com.bookstore.bookserver.api;
 
+import com.bookstore.bookserver.model.bookdtos.BookBriefDTO;
+import com.bookstore.bookserver.model.bookdtos.BookDetailDTO;
 import com.bookstore.bookserver.service.SearchService;
-import com.bookstore.bookserver.model.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

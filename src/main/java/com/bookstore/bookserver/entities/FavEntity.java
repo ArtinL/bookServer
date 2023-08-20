@@ -2,6 +2,8 @@ package com.bookstore.bookserver.entities;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.Arrays;
+
 @SuppressWarnings("unused")
 @Document(collection = "books")
 public class FavEntity {
@@ -69,5 +71,17 @@ public class FavEntity {
 
     public void setSmallThumbnail(String smallThumbnail) {
         this.smallThumbnail = smallThumbnail;
+    }
+
+    @Override
+    public String toString() {
+        return "FavEntity{" +
+                "bookID='" + bookID + '\'' +
+                ", userID='" + userID + '\'' +
+                ", title='" + title + '\'' +
+                ", authors=" + Arrays.toString(authors) +
+                ", publishedDate='" + publishedDate + '\'' +
+                ", smallThumbnail='" + smallThumbnail + '\'' +
+                '}';
     }
 }

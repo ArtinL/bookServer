@@ -1,16 +1,18 @@
-package com.bookstore.bookserver.model;
+package com.bookstore.bookserver.model.authdtos;
 
 @SuppressWarnings("unused")
 public class CredentialsDTO {
     private String username;
     private String password;
+    private String email;
 
     public CredentialsDTO() {
         super();
     }
 
-    public CredentialsDTO(String username, String password) {
+    public CredentialsDTO(String email, String username, String password) {
         super();
+        this.email = email;
         this.username = username;
         this.password = password;
     }
@@ -21,6 +23,10 @@ public class CredentialsDTO {
 
     public String getPassword() {
         return password;
+    }
+
+    public String getEmail() {
+        return email;
     }
 
     public String toString() {

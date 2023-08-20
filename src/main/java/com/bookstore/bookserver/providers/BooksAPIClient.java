@@ -1,7 +1,7 @@
 package com.bookstore.bookserver.providers;
 
-import com.bookstore.bookserver.model.*;
-
+import com.bookstore.bookserver.model.bookdtos.BookBriefDTO;
+import com.bookstore.bookserver.model.bookdtos.BookDetailDTO;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;

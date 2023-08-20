@@ -1,5 +1,5 @@
 package com.bookstore.bookserver.api;
-import com.bookstore.bookserver.model.BookBriefDTO;
+import com.bookstore.bookserver.model.bookdtos.BookBriefDTO;
 import com.bookstore.bookserver.service.FavService;
 import com.bookstore.bookserver.service.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;

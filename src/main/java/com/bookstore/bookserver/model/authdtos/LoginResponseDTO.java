@@ -1,4 +1,4 @@
-package com.bookstore.bookserver.model;
+package com.bookstore.bookserver.model.authdtos;
 
 @SuppressWarnings("unused")
 public class LoginResponseDTO {

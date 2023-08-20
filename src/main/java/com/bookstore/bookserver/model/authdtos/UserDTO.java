@@ -1,4 +1,4 @@
-package com.bookstore.bookserver.model;
+package com.bookstore.bookserver.model.authdtos;
 
 import com.bookstore.bookserver.entities.ApplicationUser;
 
@@ -7,6 +7,7 @@ public class UserDTO {
 
     private Integer userId;
     private String username;
+    private String email;
 
 
     public UserDTO() {
@@ -16,11 +17,13 @@ public class UserDTO {
     public UserDTO(ApplicationUser user) {
         this.userId = user.getUserId();
         this.username = user.getUsername();
+        this.email = user.getEmail();
     }
 
-    public UserDTO(int userId, String username) {
+    public UserDTO(int userId, String username, String email) {
         this.userId = userId;
         this.username = username;
+        this.email = email;
     }
 
     public String getUsername() {

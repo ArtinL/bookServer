@@ -19,6 +19,8 @@ public class ApplicationUser implements UserDetails {
     private Integer userId;
     @Column(unique = true)
     private String username;
+    @Column(unique=true)
+    private String email;
     private String password;
 
     @ManyToMany(fetch=FetchType.EAGER)
@@ -35,9 +37,10 @@ public class ApplicationUser implements UserDetails {
     }
 
 
-    public ApplicationUser(Integer userId, String username, String password, Set<Role> authorities) {
+    public ApplicationUser(Integer userId, String email, String username, String password, Set<Role> authorities) {
         super();
         this.userId = userId;
+        this.email = email;
         this.username = username;
         this.password = password;
         this.authorities = authorities;
@@ -70,6 +73,12 @@ public class ApplicationUser implements UserDetails {
     }
     public void setUsername(String username) {
         this.username = username;
+    }
+    public String getEmail() {
+        return this.email;
+    }
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     @Override

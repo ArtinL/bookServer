@@ -1,6 +1,7 @@
 package com.bookstore.bookserver.service;
 
-import com.bookstore.bookserver.model.*;
+import com.bookstore.bookserver.model.bookdtos.BookBriefDTO;
+import com.bookstore.bookserver.model.bookdtos.BookDetailDTO;
 import com.bookstore.bookserver.providers.BooksAPIClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
