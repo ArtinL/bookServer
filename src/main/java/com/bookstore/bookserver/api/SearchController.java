@@ -22,8 +22,13 @@ public class SearchController {
     }
 
     @GetMapping
-    public ResponseEntity<BookBriefDTO[]> getBooks(@RequestParam(name = "title") String title) {
-        return searchService.searchBooks(title.replace(" ", "+"));
+    public ResponseEntity<BookBriefDTO[]> getBooks(@RequestParam(name = "title") String title,
+                                                   @RequestParam(name = "page") String page) {
+        try {
+            return searchService.searchBooks(title.replace(" ", "+"), page);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     @GetMapping("/{id}")

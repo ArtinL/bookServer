@@ -22,8 +22,9 @@ public class BooksAPIClient {
         this.restTemplate = new RestTemplate();
     }
 
-    public BookBriefDTO[] searchBooks(String query) {
-        String apiUrlWithQuery = API_URL + "?q=" + query + "&printType=books&key=" + API_KEY;
+    public BookBriefDTO[] searchBooks(String query, String page) {
+        int index = ((Integer.parseInt(page))-1) * 10;
+        String apiUrlWithQuery = API_URL + "?q=" + query + "&printType=books&startIndex=" + index + "&key=" + API_KEY;
 
         String jsonResponse = restTemplate.getForObject(apiUrlWithQuery, String.class);
 
