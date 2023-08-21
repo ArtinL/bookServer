@@ -1,4 +1,5 @@
 package com.bookstore.bookserver.entities;
+import com.bookstore.bookserver.model.bookdtos.BookBriefDTO;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -9,20 +10,27 @@ import java.util.Arrays;
 public class FavEntity {
     @Id
     private String _id; // MongoDB's _id
-    private String bookID; // Your application's identifier
+    private String bookID;
     private String userID;
     private String title;
     private String[] authors;
     private String publishedDate;
     private String smallThumbnail;
+    private int ratingsCount;
+    private double averageRating;
 
-    public FavEntity(String bookID, String userID, String title, String[] authors, String publishedDate, String smallThumbnail) {
+    public FavEntity() {}
+
+    public FavEntity(String bookID, String userID, String title, String[] authors, String publishedDate, String smallThumbnail, double averageRating, int ratingsCount) {
         this.bookID = bookID;
         this.userID = userID;
         this.title = title;
         this.authors = authors;
         this.publishedDate = publishedDate;
         this.smallThumbnail = smallThumbnail;
+        this.averageRating = averageRating;
+        this.ratingsCount = ratingsCount;
+
     }
 
     public String getBookID() {
@@ -71,6 +79,22 @@ public class FavEntity {
 
     public void setSmallThumbnail(String smallThumbnail) {
         this.smallThumbnail = smallThumbnail;
+    }
+
+    public int getRatingsCount() {
+        return ratingsCount;
+    }
+
+    public void setRatingsCount(int ratingsCount) {
+        this.ratingsCount = ratingsCount;
+    }
+
+    public double getAverageRating() {
+        return averageRating;
+    }
+
+    public void setAverageRating(double averageRating) {
+        this.averageRating = averageRating;
     }
 
     @Override

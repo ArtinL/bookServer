@@ -30,6 +30,8 @@ public class BookBriefDeserializer extends JsonDeserializer<BookBriefDTO> {
         bookBriefDTO.authors = DeserializerUtility.safeGetArray(parent, "authors", objectMapper);
         if (isGoogle) bookBriefDTO.smallThumbnail = DeserializerUtility.safeGetOutOfObject(parent, "imageLinks", "smallThumbnail");
         else bookBriefDTO.smallThumbnail = DeserializerUtility.safeGetText(parent, "smallThumbnail");
+        bookBriefDTO.averageRating = DeserializerUtility.safeGetDouble(parent, "averageRating");
+        bookBriefDTO.ratingsCount = DeserializerUtility.safeGetInt(parent, "ratingsCount");
 
         return bookBriefDTO;
 

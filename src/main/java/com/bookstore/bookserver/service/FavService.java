@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -93,7 +94,9 @@ public class FavService {
                 favEntity.getTitle(),
                 favEntity.getAuthors(),
                 favEntity.getPublishedDate(),
-                favEntity.getSmallThumbnail()
+                favEntity.getSmallThumbnail(),
+                favEntity.getAverageRating(),
+                favEntity.getRatingsCount()
         );
     }
 
@@ -104,13 +107,16 @@ public class FavService {
                 bookBriefDTO.getTitle(),
                 bookBriefDTO.getAuthors(),
                 bookBriefDTO.getPublishedDate(),
-                bookBriefDTO.getSmallThumbnail()
+                bookBriefDTO.getSmallThumbnail(),
+                bookBriefDTO.getAverageRating(),
+                bookBriefDTO.getRatingsCount()
         );
     }
 
     private boolean isUnique(String bookID, String userID) {
-        Optional<FavEntity> optionalFavEntity = favRepository.findByUserIDAndBookID(userID, bookID);
-        return optionalFavEntity.isEmpty();
+        return true;
+        //Optional<FavEntity> optionalFavEntity = favRepository.findByUserIDAndBookID(userID, bookID);
+        //return optionalFavEntity.isEmpty();
     }
 
 
