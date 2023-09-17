@@ -1,14 +1,12 @@
 package com.bookstore.bookserver.service;
 
-import com.bookstore.bookserver.model.bookdtos.BookBriefDTO;
+import com.bookstore.bookserver.model.GenericItemDTO;
 import com.bookstore.bookserver.entities.FavEntity;
 import com.bookstore.bookserver.repository.FavRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,27 +14,27 @@ import java.util.Optional;
 @Service
 public class FavService {
     private final FavRepository favRepository;
-    private final RestTemplate restTemplate;
+    //private final RestTemplate restTemplate;
 
     @Autowired
     public FavService(FavRepository favRepository) {
-        this.restTemplate = new RestTemplate();
+        //this.restTemplate = new RestTemplate();
         this.favRepository = favRepository;
     }
 
 
-    public boolean createBook(String bookJson, String userId) {
+    public boolean createEntry(String bookJson, String userId) {
         ObjectMapper objectMapper = new ObjectMapper();
-        BookBriefDTO bookObj;
+        GenericItemDTO entry;
         try {
-            bookObj = objectMapper.readValue(bookJson, BookBriefDTO.class);
+            entry = objectMapper.readValue(bookJson, GenericItemDTO.class);
         } catch (Exception e) {
             System.out.println("FavOldService.createBook() exception: " + e.getMessage());
             return false;
         }
 
-        if (!isUnique(bookObj.getId(), userId)) return false;
-        FavEntity favEntity = convertToDataEntity(bookObj, userId);
+        if (!isUnique(entry.getId(), userId)) return false;
+        FavEntity favEntity = convertToDataEntity(entry, userId);
         favRepository.save(favEntity);
 
 
@@ -53,19 +51,38 @@ public class FavService {
 
 
 
-    public BookBriefDTO[] retrieveBooks(String userId) {
+    public GenericItemDTO[] retrieveAllEntries(String userId) {
 
         Optional<List<FavEntity>> optionalFavEntities = favRepository.findByUserID(userId);
         if (optionalFavEntities.isPresent()) {
             List<FavEntity> favEntities = optionalFavEntities.get();
-            return favEntities.stream().map(this::convertToDTO).toArray(BookBriefDTO[]::new);
+            return favEntities.stream().map(this::convertToDTO).toArray(GenericItemDTO[]::new);
 
         } else return null;
-
     }
 
-    public boolean deleteBook(String userID, String bookID) {
-        Optional<FavEntity> optionalFavEntity = favRepository.findByUserIDAndBookID(userID, bookID);
+    public GenericItemDTO[] retrieveBookEntries(String userId) {
+
+        Optional<List<FavEntity>> optionalFavEntities = favRepository.findByUserID(userId);
+        if (optionalFavEntities.isPresent()) {
+            List<FavEntity> favEntities = optionalFavEntities.get();
+            return favEntities.stream().filter(favEntity -> favEntity.getType().equals("book")).map(this::convertToDTO).toArray(GenericItemDTO[]::new);
+
+        } else return null;
+    }
+
+    public GenericItemDTO[] retrieveMovieEntries(String userId) {
+
+        Optional<List<FavEntity>> optionalFavEntities = favRepository.findByUserID(userId);
+        if (optionalFavEntities.isPresent()) {
+            List<FavEntity> favEntities = optionalFavEntities.get();
+            return favEntities.stream().filter(favEntity -> favEntity.getType().equals("movie")).map(this::convertToDTO).toArray(GenericItemDTO[]::new);
+
+        } else return null;
+    }
+
+    public boolean deleteEntry(String userID, String entryID) {
+        Optional<FavEntity> optionalFavEntity = favRepository.findByUserIDAndEntryID(userID, entryID);
         if (optionalFavEntity.isPresent()) {
             FavEntity favEntity = optionalFavEntity.get();
             favRepository.delete(favEntity);
@@ -74,13 +91,13 @@ public class FavService {
 
     }
 
-    public String[] matchAgainstDB(String[] bookIds, String userId) {
+    public String[] matchAgainstDB(String[] entryIDs, String userId) {
         Optional<List<FavEntity>> optionalFavEntities = favRepository.findByUserID(userId);
         if (optionalFavEntities.isPresent()) {
             List<FavEntity> favEntities = optionalFavEntities.get();
-            return favEntities.stream().map(FavEntity::getBookID).filter(bookId -> {
-                for (String id : bookIds) {
-                    if (id.equals(bookId)) return true;
+            return favEntities.stream().map(FavEntity::getEntryID).filter(entryID -> {
+                for (String id : entryIDs) {
+                    if (id.equals(entryID)) return true;
                 }
                 return false;
             }).toArray(String[]::new);
@@ -88,28 +105,30 @@ public class FavService {
         } else return null;
     }
 
-    private BookBriefDTO convertToDTO(FavEntity favEntity) {
-        return new BookBriefDTO(
-                favEntity.getBookID(),
-                favEntity.getTitle(),
-                favEntity.getAuthors(),
-                favEntity.getPublishedDate(),
-                favEntity.getSmallThumbnail(),
+    private GenericItemDTO convertToDTO(FavEntity favEntity) {
+        return new GenericItemDTO(
+                favEntity.getType(),
+                favEntity.getEntryID(),
+                favEntity.getDisplayName(),
+                favEntity.getCreators(),
+                favEntity.getDate(),
+                favEntity.getThumbnail(),
                 favEntity.getAverageRating(),
                 favEntity.getRatingsCount()
         );
     }
 
-    private FavEntity convertToDataEntity(BookBriefDTO bookBriefDTO, String userID) {
+    private FavEntity convertToDataEntity(GenericItemDTO genericItemDTO, String userID) {
         return new FavEntity(
-                bookBriefDTO.getId(),
+                genericItemDTO.getType(),
+                genericItemDTO.getId(),
                 userID,
-                bookBriefDTO.getTitle(),
-                bookBriefDTO.getAuthors(),
-                bookBriefDTO.getPublishedDate(),
-                bookBriefDTO.getSmallThumbnail(),
-                bookBriefDTO.getAverageRating(),
-                bookBriefDTO.getRatingsCount()
+                genericItemDTO.getDisplayName(),
+                genericItemDTO.getCreators(),
+                genericItemDTO.getDate(),
+                genericItemDTO.getThumbnail(),
+                genericItemDTO.getAverageRating(),
+                genericItemDTO.getRatingsCount()
         );
     }
 

@@ -1,27 +1,38 @@
 package com.bookstore.bookserver.service;
 
-import com.bookstore.bookserver.model.bookdtos.BookBriefDTO;
-import com.bookstore.bookserver.model.bookdtos.BookDetailDTO;
+import com.bookstore.bookserver.model.GenericItemDTO;
+import com.bookstore.bookserver.model.books.BookDetailDTO;
+import com.bookstore.bookserver.model.movies.MovieDetailDTO;
 import com.bookstore.bookserver.providers.BooksAPIClient;
-import org.springframework.http.ResponseEntity;
+import com.bookstore.bookserver.providers.MoviesAPIClient;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class SearchService {
     private final BooksAPIClient booksAPIClient;
+    private final MoviesAPIClient moviesAPIClient;
 
-    public SearchService() {
-        this.booksAPIClient = new BooksAPIClient();
+    @Autowired
+    public SearchService(BooksAPIClient booksAPIClient, MoviesAPIClient moviesAPIClient) {
+        this.booksAPIClient = booksAPIClient;
+        this.moviesAPIClient = moviesAPIClient;
     }
 
-    public ResponseEntity<BookBriefDTO[]> searchBooks(String query, String page) {
-        BookBriefDTO[] objects = booksAPIClient.searchBooks(query, page);
-        return ResponseEntity.ok(objects);
+    public GenericItemDTO[] searchBooks(String query, String page) {
+        return booksAPIClient.searchBooks(query, page);
     }
 
-    public ResponseEntity<BookDetailDTO> getBookDetails(String id) {
-        BookDetailDTO object = booksAPIClient.getBookDetails(id);
-        return ResponseEntity.ok(object);
+    public BookDetailDTO getBookDetails(String id) {
+        return booksAPIClient.getBookDetails(id);
+    }
+
+    public GenericItemDTO[] searchMovies(String query, String page) {
+        return moviesAPIClient.searchMovies(query, page);
+    }
+
+    public MovieDetailDTO getMovieDetails(String id) {
+        return moviesAPIClient.getMovieDetails(id);
     }
 
 }

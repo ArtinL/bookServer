@@ -1,5 +1,4 @@
 package com.bookstore.bookserver.entities;
-import com.bookstore.bookserver.model.bookdtos.BookBriefDTO;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -10,35 +9,46 @@ import java.util.Arrays;
 public class FavEntity {
     @Id
     private String _id; // MongoDB's _id
-    private String bookID;
+    private String type;
+    private String entryID;
     private String userID;
-    private String title;
-    private String[] authors;
-    private String publishedDate;
-    private String smallThumbnail;
+    private String displayName;
+    private String[] creators;
+    private String date;
+    private String thumbnail;
     private int ratingsCount;
     private double averageRating;
 
     public FavEntity() {}
 
-    public FavEntity(String bookID, String userID, String title, String[] authors, String publishedDate, String smallThumbnail, double averageRating, int ratingsCount) {
-        this.bookID = bookID;
+    public FavEntity(String type, String entryID, String userID, String displayName,
+                     String[] creators, String date, String thumbnail, double averageRating, int ratingsCount) {
+        this.type = type;
+        this.entryID = entryID;
         this.userID = userID;
-        this.title = title;
-        this.authors = authors;
-        this.publishedDate = publishedDate;
-        this.smallThumbnail = smallThumbnail;
+        this.displayName = displayName;
+        this.creators = creators;
+        this.date = date;
+        this.thumbnail = thumbnail;
         this.averageRating = averageRating;
         this.ratingsCount = ratingsCount;
 
     }
 
-    public String getBookID() {
-        return bookID;
+    public String getType() {
+        return type;
     }
 
-    public void setBookID(String bookID) {
-        this.bookID = bookID;
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getEntryID() {
+        return entryID;
+    }
+
+    public void setEntryID(String entryID) {
+        this.entryID = entryID;
     }
 
     public String getUserID() {
@@ -49,36 +59,36 @@ public class FavEntity {
         this.userID = userID;
     }
 
-    public String getTitle() {
-        return title;
+    public String getDisplayName() {
+        return displayName;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 
-    public String[] getAuthors() {
-        return authors;
+    public String[] getCreators() {
+        return creators;
     }
 
-    public void setAuthors(String[] authors) {
-        this.authors = authors;
+    public void setCreators(String[] creators) {
+        this.creators = creators;
     }
 
-    public String getPublishedDate() {
-        return publishedDate;
+    public String getDate() {
+        return date;
     }
 
-    public void setPublishedDate(String publishedDate) {
-        this.publishedDate = publishedDate;
+    public void setDate(String date) {
+        this.date = date;
     }
 
-    public String getSmallThumbnail() {
-        return smallThumbnail;
+    public String getThumbnail() {
+        return thumbnail;
     }
 
-    public void setSmallThumbnail(String smallThumbnail) {
-        this.smallThumbnail = smallThumbnail;
+    public void setThumbnail(String thumbnail) {
+        this.thumbnail = thumbnail;
     }
 
     public int getRatingsCount() {
@@ -100,12 +110,12 @@ public class FavEntity {
     @Override
     public String toString() {
         return "FavEntity{" +
-                "bookID='" + bookID + '\'' +
+                "bookID='" + entryID + '\'' +
                 ", userID='" + userID + '\'' +
-                ", title='" + title + '\'' +
-                ", authors=" + Arrays.toString(authors) +
-                ", publishedDate='" + publishedDate + '\'' +
-                ", smallThumbnail='" + smallThumbnail + '\'' +
+                ", title='" + displayName + '\'' +
+                ", authors=" + Arrays.toString(creators) +
+                ", publishedDate='" + date + '\'' +
+                ", smallThumbnail='" + thumbnail + '\'' +
                 '}';
     }
 }

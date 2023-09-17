@@ -1,7 +1,8 @@
 package com.bookstore.bookserver.providers;
 
-import com.bookstore.bookserver.model.bookdtos.BookBriefDTO;
-import com.bookstore.bookserver.model.bookdtos.BookDetailDTO;
+import com.bookstore.bookserver.model.GenericItemDTO;
+import com.bookstore.bookserver.model.books.BookBrief;
+import com.bookstore.bookserver.model.books.BookDetailDTO;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -22,7 +23,7 @@ public class BooksAPIClient {
         this.restTemplate = new RestTemplate();
     }
 
-    public BookBriefDTO[] searchBooks(String query, String page) {
+    public GenericItemDTO[] searchBooks(String query, String page) {
         int index = ((Integer.parseInt(page))-1) * 10;
         String apiUrlWithQuery = API_URL + "?q=" + query + "&printType=books&startIndex=" + index + "&key=" + API_KEY;
 
@@ -33,16 +34,16 @@ public class BooksAPIClient {
 
         try {
             JsonNode itemsNode = objectMapper.readTree(jsonResponse).get("items");
-            ArrayList<BookBriefDTO> bookList = new ArrayList<>();
+            ArrayList<GenericItemDTO> bookList = new ArrayList<>();
             for (JsonNode item : itemsNode) {
-                BookBriefDTO book = objectMapper.readValue(item.toString(), BookBriefDTO.class);
-                bookList.add(book);
+                BookBrief book = objectMapper.readValue(item.toString(), BookBrief.class);
+                bookList.add(new GenericItemDTO(book));
             }
-            return bookList.toArray(new BookBriefDTO[0]);
+            return bookList.toArray(new GenericItemDTO[0]);
         } catch (Exception e) {
             System.out.println("Deserialization failed");
             System.out.println(e.getMessage());
-            return new BookBriefDTO[0];
+            return new GenericItemDTO[0];
         }
     }
 
