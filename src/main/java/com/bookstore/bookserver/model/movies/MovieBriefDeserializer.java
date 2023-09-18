@@ -1,5 +1,6 @@
 package com.bookstore.bookserver.model.movies;
 
+import com.bookstore.bookserver.util.DeserializerUtility;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
@@ -16,17 +17,17 @@ public class MovieBriefDeserializer extends JsonDeserializer<MovieBrief> {
         JsonNode rootNode = jsonParser.readValueAsTree();
         MovieBrief movieBrief = new MovieBrief();
 
-        movieBrief.id = rootNode.get("imdbID").asText();
-        movieBrief.title = rootNode.get("Title").asText();
-        String directorStr = rootNode.get("Director").asText();
-        movieBrief.directors = directorStr.split(", ");
+        movieBrief.setId(DeserializerUtility.safeGetText(rootNode, "imdbID"));
+        movieBrief.setTitle(DeserializerUtility.safeGetText(rootNode, "Title"));
+        String directorStr = DeserializerUtility.safeGetText(rootNode, "Director");
+        movieBrief.setCreators(directorStr.split(", "));
 
-        String releasedDateStr = rootNode.get("Released").asText();
-        movieBrief.date = formatDate(releasedDateStr);
+        String releasedDateStr = DeserializerUtility.safeGetText(rootNode, "Released");
+        movieBrief.setDate(formatDate(releasedDateStr));
 
-        movieBrief.posterLink = rootNode.get("Poster").asText();
-        movieBrief.imdbRating = Math.floor((rootNode.get("imdbRating").asDouble())) / 2.0;
-        movieBrief.imdbVotes = parseImdbVotes(rootNode.get("imdbVotes").asText());
+        movieBrief.setThumbnail(DeserializerUtility.safeGetText(rootNode, "Poster"));
+        movieBrief.setAverageRating(Math.floor((DeserializerUtility.safeGetDouble(rootNode, "imdbRating"))) / 2.0);
+        movieBrief.setRatingsCount(parseImdbVotes(DeserializerUtility.safeGetText(rootNode, "imdbVotes")));
 
         return movieBrief;
     }

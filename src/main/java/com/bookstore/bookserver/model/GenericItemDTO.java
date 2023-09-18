@@ -1,66 +1,35 @@
 package com.bookstore.bookserver.model;
 import com.bookstore.bookserver.entities.FavEntity;
-import com.bookstore.bookserver.model.books.BookBrief;
-import com.bookstore.bookserver.model.movies.MovieBrief;
 
 import java.util.Arrays;
 
 @SuppressWarnings("unused")
 
 public class GenericItemDTO {
-    String type;
-    String id;
-    String displayName;
-    String[] creators;
-    String date;
-    String thumbnail;
-    double averageRating;
-    int ratingsCount;
+    private String type;
+    private String id;
+    private String title;
+    private String[] creators;
+    private String date;
+    private String thumbnail;
+    private double averageRating;
+    private int ratingsCount;
 
     public GenericItemDTO() {}
 
-    public GenericItemDTO(String type, String id, String displayName, String[] creators, String date, String thumbnail, double averageRating, int ratingsCount) {
+    public GenericItemDTO(String type) {
+        this.type = type;
+    }
+
+    public GenericItemDTO(String type, String id, String title, String[] creators, String date, String thumbnail, double averageRating, int ratingsCount) {
         this.type = type;
         this.id = id;
-        this.displayName = displayName;
+        this.title = title;
         this.creators = creators;
         this.date = date;
         this.thumbnail = thumbnail;
         this.averageRating = averageRating;
         this.ratingsCount = ratingsCount;
-    }
-
-    public GenericItemDTO(BookBrief book) {
-        this.type = "book";
-        this.id = book.getId();
-        this.displayName = book.getTitle();
-        this.creators = book.getAuthors();
-        this.date = book.getPublishedDate();
-        this.thumbnail = book.getSmallThumbnail();
-        this.averageRating = book.getAverageRating();
-        this.ratingsCount = book.getRatingsCount();
-    }
-
-    public GenericItemDTO(MovieBrief movie) {
-        this.type = "movie";
-        this.id = movie.getId();
-        this.displayName = movie.getTitle();
-        this.creators = movie.getDirectors();
-        this.date = movie.getDate();
-        this.thumbnail = movie.getPosterLink();
-        this.averageRating = movie.getImdbRating();
-        this.ratingsCount = movie.getImdbVotes();
-    }
-
-    public GenericItemDTO(FavEntity fav) {
-        this.type = fav.getType();
-        this.id = fav.getEntryID();
-        this.displayName = fav.getDisplayName();
-        this.creators = fav.getCreators();
-        this.date = fav.getDate();
-        this.thumbnail = fav.getThumbnail();
-        this.averageRating = fav.getAverageRating();
-        this.ratingsCount = fav.getRatingsCount();
     }
 
     public String getType() {
@@ -71,8 +40,8 @@ public class GenericItemDTO {
         return id;
     }
 
-    public String getDisplayName() {
-        return displayName;
+    public String getTitle() {
+        return title;
     }
 
     public String[] getCreators() {
@@ -103,8 +72,8 @@ public class GenericItemDTO {
         this.id = id;
     }
 
-    public void setDisplayName(String displayName) {
-        this.displayName = displayName;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public void setCreators(String[] creators) {
@@ -130,7 +99,7 @@ public class GenericItemDTO {
     public String toString() {
         return "Item{" +
                 "id='" + id + '\'' +
-                ", title='" + displayName + '\'' +
+                ", title='" + title + '\'' +
                 ", authors=" + Arrays.toString(creators) +
                 ", publishedDate='" + date + '\'' +
                 ", smallThumbnail='" + thumbnail + '\'' +

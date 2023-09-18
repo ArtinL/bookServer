@@ -37,7 +37,7 @@ public class BooksAPIClient {
             ArrayList<GenericItemDTO> bookList = new ArrayList<>();
             for (JsonNode item : itemsNode) {
                 BookBrief book = objectMapper.readValue(item.toString(), BookBrief.class);
-                bookList.add(new GenericItemDTO(book));
+                bookList.add(book);
             }
             return bookList.toArray(new GenericItemDTO[0]);
         } catch (Exception e) {

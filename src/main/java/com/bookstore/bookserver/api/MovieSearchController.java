@@ -11,24 +11,22 @@ import org.springframework.http.ResponseEntity;
 
 
 @RestController
-@RequestMapping("/search")
+@RequestMapping("/movies")
 @CrossOrigin(origins = "*")
-public class SearchController {
+public class MovieSearchController {
 
     private final SearchService searchService;
 
     @Autowired
-    public SearchController(SearchService searchService) {
+    public MovieSearchController(SearchService searchService) {
         this.searchService = searchService;
     }
 
     @GetMapping()
     public ResponseEntity<GenericItemDTO[]> getBooks(@RequestParam(name = "title") String title,
-                                                     @RequestParam(name = "page") String page,
-                                                     @RequestParam(name = "type") String type) {
+                                                     @RequestParam(name = "page") String page) {
         try {
-            GenericItemDTO[] items = type.equals("books") ?
-                    searchService.searchBooks(title, page) :
+            GenericItemDTO[] items = searchService.searchMovies(title, page);
                     searchService.searchMovies(title, page);
             return ResponseEntity.ok(items);
         } catch (Exception e) {
@@ -37,17 +35,16 @@ public class SearchController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<BookDetailDTO> getBookDetails(@PathVariable(name = "id") String id,
-                                                        @RequestParam(name = "type") String type) {
+    public ResponseEntity<MovieDetailDTO> getBookDetails(@PathVariable(name = "id") String id) {
         try {
-            BookDetailDTO book = searchService.getBookDetails(id);
+            MovieDetailDTO book = searchService.getMovieDetails(id);
             return ResponseEntity.ok(book);
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
         }
     }
 
-//    @GetMapping()
+//    @GetMapping("/movies")
 //    public ResponseEntity<GenericItemDTO[]> getMovies(@RequestParam(name = "title") String title,
 //                                                     @RequestParam(name = "page") String page) {
 //        try {

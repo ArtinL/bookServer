@@ -61,7 +61,8 @@ public class SecurityConfiguration {
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers("/auth/**").permitAll();
-                    auth.requestMatchers("/search/**").permitAll();
+                    auth.requestMatchers("/books/**").permitAll();
+                    auth.requestMatchers("/movies/**").permitAll();
                     auth.requestMatchers("/favorites/**").authenticated();
                 })
                 .oauth2ResourceServer(configurer -> configurer.jwt(Customizer.withDefaults()))

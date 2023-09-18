@@ -18,41 +18,41 @@ public class BookDetailDeserializer extends JsonDeserializer<BookDetailDTO> {
 
         BookDetailDTO bookDetailDTO = new BookDetailDTO();
 
-        bookDetailDTO.id = DeserializerUtility.safeGetText(node, "id");
+        bookDetailDTO.setId(DeserializerUtility.safeGetText(node, "id"));
 
         JsonNode volumeInfo = node.get("volumeInfo");
 
-        bookDetailDTO.title = DeserializerUtility.safeGetText(volumeInfo, "title");
-        bookDetailDTO.publishedDate = DeserializerUtility.safeGetText(volumeInfo, "publishedDate");
-        bookDetailDTO.publisher = DeserializerUtility.safeGetText(volumeInfo, "publisher");
-        bookDetailDTO.description = DeserializerUtility.safeGetText(volumeInfo, "description");
-        bookDetailDTO.pageCount = DeserializerUtility.safeGetInt(volumeInfo, "pageCount");
-        bookDetailDTO.averageRating = DeserializerUtility.safeGetDouble(volumeInfo, "averageRating");
-        bookDetailDTO.ratingsCount = DeserializerUtility.safeGetInt(volumeInfo, "ratingsCount");
-        bookDetailDTO.language = DeserializerUtility.safeGetText(volumeInfo, "language");
-        bookDetailDTO.previewLink = DeserializerUtility.safeGetText(volumeInfo, "previewLink");
-        bookDetailDTO.authors = DeserializerUtility.safeGetArray(volumeInfo, "authors", objectMapper);
-        bookDetailDTO.categories = DeserializerUtility.safeGetArray(volumeInfo, "categories", objectMapper);
-        bookDetailDTO.largeThumbnail = DeserializerUtility.safeGetOutOfObject(volumeInfo, "imageLinks", "thumbnail");
+        bookDetailDTO.setTitle(DeserializerUtility.safeGetText(volumeInfo, "title"));
+        bookDetailDTO.setDate(DeserializerUtility.safeGetText(volumeInfo, "publishedDate"));
+        bookDetailDTO.setPublisher(DeserializerUtility.safeGetText(volumeInfo, "publisher"));
+        bookDetailDTO.setDescription(DeserializerUtility.safeGetText(volumeInfo, "description"));
+        bookDetailDTO.setPageCount(DeserializerUtility.safeGetInt(volumeInfo, "pageCount"));
+        bookDetailDTO.setAverageRating(DeserializerUtility.safeGetDouble(volumeInfo, "averageRating"));
+        bookDetailDTO.setRatingsCount(DeserializerUtility.safeGetInt(volumeInfo, "ratingsCount"));
+        bookDetailDTO.setLanguage(DeserializerUtility.safeGetText(volumeInfo, "language"));
+        bookDetailDTO.setPreviewLink(DeserializerUtility.safeGetText(volumeInfo, "previewLink"));
+        bookDetailDTO.setCreators(DeserializerUtility.safeGetArray(volumeInfo, "authors", objectMapper));
+        bookDetailDTO.setCategories(DeserializerUtility.safeGetArray(volumeInfo, "categories", objectMapper));
+        bookDetailDTO.setThumbnail(DeserializerUtility.safeGetOutOfObject(volumeInfo, "imageLinks", "thumbnail"));
 
         JsonNode saleInfo = node.get("saleInfo");
-        bookDetailDTO.saleInfo = new BookDetailDTO.SaleInfo();
-        bookDetailDTO.saleInfo.country = DeserializerUtility.safeGetText(saleInfo, "country");
-        bookDetailDTO.saleInfo.saleability = saleInfo.get("saleability").asText().equals("FOR_SALE");
+        bookDetailDTO.setSaleInfo(new BookDetailDTO.SaleInfo());
+        bookDetailDTO.getSaleInfo().country = DeserializerUtility.safeGetText(saleInfo, "country");
+        bookDetailDTO.getSaleInfo().saleability = saleInfo.get("saleability").asText().equals("FOR_SALE");
 
-        if (bookDetailDTO.saleInfo.saleability) {
+        if (bookDetailDTO.getSaleInfo().saleability) {
             String price = DeserializerUtility.safeGetOutOfObject(saleInfo, "retailPrice", "amount");
-            bookDetailDTO.saleInfo.retailPrice = price == null ? null : Double.parseDouble(price);
-            bookDetailDTO.saleInfo.buyLink = DeserializerUtility.safeGetText(saleInfo, "buyLink");
+            bookDetailDTO.getSaleInfo().retailPrice = price == null ? null : Double.parseDouble(price);
+            bookDetailDTO.getSaleInfo().buyLink = DeserializerUtility.safeGetText(saleInfo, "buyLink");
         }
         else {
-            bookDetailDTO.saleInfo.retailPrice = null;
-            bookDetailDTO.saleInfo.buyLink = null;
+            bookDetailDTO.getSaleInfo().retailPrice = null;
+            bookDetailDTO.getSaleInfo().buyLink = null;
         }
-
-
 
         return bookDetailDTO;
     }
+
+
 
 }

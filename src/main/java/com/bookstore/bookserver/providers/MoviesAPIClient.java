@@ -1,6 +1,7 @@
 package com.bookstore.bookserver.providers;
 
 import com.bookstore.bookserver.model.GenericItemDTO;
+import com.bookstore.bookserver.model.books.BookDetailDTO;
 import com.bookstore.bookserver.model.movies.MovieBrief;
 import com.bookstore.bookserver.model.movies.MovieDetailDTO;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -60,14 +61,25 @@ public class MoviesAPIClient {
                 return new GenericItemDTO[0];
             }
 
-            items.add(new GenericItemDTO(movie));
+            items.add(movie);
         }
 
         return items.toArray(new GenericItemDTO[0]);
     }
 
     public MovieDetailDTO getMovieDetails(String id) {
-        return null;
+        String apiUrlWithId = API_URL + "&i=" + id + "&plot=full";
+        String jsonResponse = restTemplate.getForObject(apiUrlWithId, String.class);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        try {
+            return objectMapper.readValue(jsonResponse, MovieDetailDTO.class);
+        } catch (Exception e) {
+            System.out.println("Deserialization failed");
+            System.out.println(e.getMessage());
+            return new MovieDetailDTO();
+        }
     }
 
 }

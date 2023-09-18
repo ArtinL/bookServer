@@ -25,17 +25,17 @@ public class FavService {
 
     public boolean createEntry(String bookJson, String userId) {
         ObjectMapper objectMapper = new ObjectMapper();
-        GenericItemDTO entry;
+        FavEntity entry;
         try {
-            entry = objectMapper.readValue(bookJson, GenericItemDTO.class);
+            entry = objectMapper.readValue(bookJson, FavEntity.class);
         } catch (Exception e) {
             System.out.println("FavOldService.createBook() exception: " + e.getMessage());
             return false;
         }
 
         if (!isUnique(entry.getId(), userId)) return false;
-        FavEntity favEntity = convertToDataEntity(entry, userId);
-        favRepository.save(favEntity);
+        entry.setUserID(userId);
+        favRepository.save(entry);
 
 
 //        HttpHeaders headers = new HttpHeaders();
@@ -66,7 +66,7 @@ public class FavService {
         Optional<List<FavEntity>> optionalFavEntities = favRepository.findByUserID(userId);
         if (optionalFavEntities.isPresent()) {
             List<FavEntity> favEntities = optionalFavEntities.get();
-            return favEntities.stream().filter(favEntity -> favEntity.getType().equals("book")).map(this::convertToDTO).toArray(GenericItemDTO[]::new);
+            return favEntities.stream().filter(favEntity -> favEntity.getType().equals("books")).map(this::convertToDTO).toArray(GenericItemDTO[]::new);
 
         } else return null;
     }
@@ -76,13 +76,13 @@ public class FavService {
         Optional<List<FavEntity>> optionalFavEntities = favRepository.findByUserID(userId);
         if (optionalFavEntities.isPresent()) {
             List<FavEntity> favEntities = optionalFavEntities.get();
-            return favEntities.stream().filter(favEntity -> favEntity.getType().equals("movie")).map(this::convertToDTO).toArray(GenericItemDTO[]::new);
+            return favEntities.stream().filter(favEntity -> favEntity.getType().equals("movies")).map(this::convertToDTO).toArray(GenericItemDTO[]::new);
 
         } else return null;
     }
 
     public boolean deleteEntry(String userID, String entryID) {
-        Optional<FavEntity> optionalFavEntity = favRepository.findByUserIDAndEntryID(userID, entryID);
+        Optional<FavEntity> optionalFavEntity = favRepository.findByUserIDAndId(userID, entryID);
         if (optionalFavEntity.isPresent()) {
             FavEntity favEntity = optionalFavEntity.get();
             favRepository.delete(favEntity);
@@ -95,7 +95,7 @@ public class FavService {
         Optional<List<FavEntity>> optionalFavEntities = favRepository.findByUserID(userId);
         if (optionalFavEntities.isPresent()) {
             List<FavEntity> favEntities = optionalFavEntities.get();
-            return favEntities.stream().map(FavEntity::getEntryID).filter(entryID -> {
+            return favEntities.stream().map(FavEntity::getId).filter(entryID -> {
                 for (String id : entryIDs) {
                     if (id.equals(entryID)) return true;
                 }
@@ -108,8 +108,8 @@ public class FavService {
     private GenericItemDTO convertToDTO(FavEntity favEntity) {
         return new GenericItemDTO(
                 favEntity.getType(),
-                favEntity.getEntryID(),
-                favEntity.getDisplayName(),
+                favEntity.getId(),
+                favEntity.getTitle(),
                 favEntity.getCreators(),
                 favEntity.getDate(),
                 favEntity.getThumbnail(),
@@ -118,19 +118,19 @@ public class FavService {
         );
     }
 
-    private FavEntity convertToDataEntity(GenericItemDTO genericItemDTO, String userID) {
-        return new FavEntity(
-                genericItemDTO.getType(),
-                genericItemDTO.getId(),
-                userID,
-                genericItemDTO.getDisplayName(),
-                genericItemDTO.getCreators(),
-                genericItemDTO.getDate(),
-                genericItemDTO.getThumbnail(),
-                genericItemDTO.getAverageRating(),
-                genericItemDTO.getRatingsCount()
-        );
-    }
+//    private FavEntity convertToDataEntity(GenericItemDTO genericItemDTO, String userID) {
+//        return new FavEntity(
+//                genericItemDTO.getType(),
+//                genericItemDTO.getId(),
+//                userID,
+//                genericItemDTO.getTitle(),
+//                genericItemDTO.getCreators(),
+//                genericItemDTO.getDate(),
+//                genericItemDTO.getThumbnail(),
+//                genericItemDTO.getAverageRating(),
+//                genericItemDTO.getRatingsCount()
+//        );
+//    }
 
     private boolean isUnique(String bookID, String userID) {
         return true;

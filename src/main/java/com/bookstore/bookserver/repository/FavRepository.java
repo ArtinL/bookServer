@@ -9,6 +9,6 @@ import java.util.Optional;
 @Repository
 public interface FavRepository extends MongoRepository<FavEntity, String> {
     Optional<List<FavEntity>> findByUserID(String userId);
-    Optional<FavEntity> findByUserIDAndEntryID(String userId, String entryId);
+    Optional<FavEntity> findByUserIDAndId(String userId, String entryId);
 
 }

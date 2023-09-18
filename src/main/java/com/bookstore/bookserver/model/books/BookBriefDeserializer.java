@@ -21,17 +21,17 @@ public class BookBriefDeserializer extends JsonDeserializer<BookBrief> {
 
         boolean isGoogle = node.get("volumeInfo") != null;
 
-        book.id = DeserializerUtility.safeGetText(node, "id");
+        book.setId(DeserializerUtility.safeGetText(node, "id"));
 
         JsonNode parent =  isGoogle ? node.get("volumeInfo") : node;
 
-        book.title = DeserializerUtility.safeGetText(parent, "title");
-        book.publishedDate = DeserializerUtility.safeGetText(parent, "publishedDate");
-        book.authors = DeserializerUtility.safeGetArray(parent, "authors", objectMapper);
-        if (isGoogle) book.smallThumbnail = DeserializerUtility.safeGetOutOfObject(parent, "imageLinks", "smallThumbnail");
-        else book.smallThumbnail = DeserializerUtility.safeGetText(parent, "smallThumbnail");
-        book.averageRating = DeserializerUtility.safeGetDouble(parent, "averageRating");
-        book.ratingsCount = DeserializerUtility.safeGetInt(parent, "ratingsCount");
+        book.setTitle(DeserializerUtility.safeGetText(parent, "title"));
+        book.setDate(DeserializerUtility.safeGetText(parent, "publishedDate"));
+        book.setCreators(DeserializerUtility.safeGetArray(parent, "authors", objectMapper));
+        if (isGoogle) book.setThumbnail(DeserializerUtility.safeGetOutOfObject(parent, "imageLinks", "smallThumbnail"));
+        else book.setThumbnail(DeserializerUtility.safeGetText(parent, "smallThumbnail"));
+        book.setAverageRating(DeserializerUtility.safeGetDouble(parent, "averageRating"));
+        book.setRatingsCount(DeserializerUtility.safeGetInt(parent, "ratingsCount"));
 
         return book;
 
