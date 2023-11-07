@@ -23,7 +23,7 @@ public class MoviesAPIClient {
         this.restTemplate = new RestTemplate();
     }
 
-    private static final String API_URL = "http://www.omdbapi.com/?apikey=520a7bb9&type=movie";
+    private static final String API_URL = "http://www.omdbapi.com/?apikey=520a7bb9";
 
     public GenericItemDTO[] searchMovies(String query, String page) {
 
