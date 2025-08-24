@@ -60,6 +60,8 @@ public class SecurityConfiguration {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(auth -> {
+                    auth.requestMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**").permitAll();
+                    auth.requestMatchers("/actuator/health").permitAll(); // handy for the platform
                     auth.requestMatchers("/auth/**").permitAll();
                     auth.requestMatchers("/books/**").permitAll();
                     auth.requestMatchers("/movies/**").permitAll();
